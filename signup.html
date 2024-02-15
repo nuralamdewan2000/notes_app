@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+    <style>
+        /* Style for body */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+/* Style for container */
+.container {
+    max-width: 500px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Style for heading */
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+/* Style for input fields */
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box; /* Ensure padding and border are included in width */
+}
+
+/* Style for submit button */
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Style for submit button on hover */
+button:hover {
+    background-color: #0056b3;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Registration Form</h1>
+        <input type="text" placeholder="Enter UserName" id="username">
+        <input type="text" placeholder="Enter Email...." id="email">
+        <input type="password" placeholder="Enter password" id="password">
+        <button onclick ="handleRegistration()">Register!</button>
+    </div>
+    
+    <script>
+        // JavaScript code
+        const handleRegistration =() =>{
+            let userName =document.getElementById("username").value
+            let email =document.getElementById("email").value
+            let pass =document.getElementById("password").value
+            const payload ={
+                userName,
+                email,
+                pass
+            }
+            console.log(payload)
+
+            fetch("https://repulsive-fox-zipper.cyclic.app/users/register",{
+                method:"POST",
+                headers:{
+                    "Content-type":"application/json"
+                },
+                body:JSON.stringify(payload)
+            }).then(res =>res.json())
+            .then(data =>console.log(data))
+            .catch(err => console.log(err))
+
+            setTimeout(()=>{
+            window.location.href ="login.html"
+           },3000)
+
+        }
+    </script>
+</body>
+</html>

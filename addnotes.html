@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add a Note</title>
+    <style>
+      
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    max-width: 500px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    text-align: center;
+    color: #333;
+}
+
+input[type="text"],
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>ADD NOTE</h2>
+        <input type="text" placeholder="Enter title...." id="title">
+        <textarea placeholder="Enter Note Detail....." id="body"></textarea>
+        <button onclick="addNote()">Add Note!</button>
+    </div>
+    
+</body>
+</html>
+<script>
+    const addNote =() =>{
+        
+        let title =document.getElementById("title").value
+        let body =document.getElementById("body").value
+        const payload ={
+         
+            title,
+            body
+        }
+
+        fetch('https://repulsive-fox-zipper.cyclic.app/notes',{
+            method:"POST",
+            headers:{
+                "content-type":"application/json",
+                authorization :`Bearer ${localStorage.getItem("token")}`
+            },
+            body:JSON.stringify(payload)
+
+        }).then(res =>res.json())
+        .then(data =>{
+            console.log(data)
+            
+        })
+        .catch(err => console.log(err))
+       setTimeout(()=>{
+        window.location.href ="index.html"
+       },3000)
+    }
+
+    
+</script>

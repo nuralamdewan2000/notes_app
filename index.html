@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes Dashboard</title>
+    <style>
+      /* CSS styles for Notes Dashboard page */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    text-align: center;
+    color: #333;
+}
+
+#parent {
+    margin-top: 20px;
+}
+
+.note {
+    background: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+h3 {
+    color: #333;
+}
+
+p {
+    color: #666;
+}
+
+h4 {
+    margin-top: 10px;
+    color: #999;
+}
+
+button {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Notes</h2>
+        <div id="parent">All The notes</div>
+      
+    </div>
+    <button onclick="newNote()">Add New Note!</button>
+    
+    
+</body>
+</html>
+<script>
+    const getNotes = () => {
+        fetch("https://repulsive-fox-zipper.cyclic.app/notes", {
+            headers: {
+                "Content-type": "application/json",
+                authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            displayNotes(data.notes);
+        })
+        .catch(err => console.log(err));
+    }
+
+    const displayNotes = (notes) => {
+        const parent = document.getElementById('parent');
+        parent.innerHTML = ''; // Clear existing notes
+
+        notes.forEach(note => {
+            const noteElement = document.createElement('div');
+            noteElement.innerHTML = `
+                <h3>${note.title}</h3>
+                <p>${note.body}</p>
+                <h4>${note.author}</h4>
+                <button onclick="updateNote('${note._id}')">Update Note</button>
+                <button onclick="deleteNote('${note._id}')">Delete Note</button>
+               
+            `;
+          
+            parent.appendChild(noteElement);
+        });
+    }
+
+    const newNote = () => {
+        window.location.href = "addnotes.html";
+    }
+
+    const updateNote = (noteID) => {
+      
+        window.location.href = `updatenotes.html?_id=${noteID}`;
+    }
+
+    const deleteNote = (noteID) => {
+        if (confirm("Are you sure you want to delete this note?")) {
+            fetch(`https://repulsive-fox-zipper.cyclic.app/notes/${noteID}`, {
+                method: 'DELETE',
+                headers: {
+                    "Content-type": "application/json",
+                    authorization: `Bearer ${localStorage.getItem("token")}`
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.msg);
+                getNotes(); // Refresh notes after deletion
+            })
+            .catch(err => console.log(err));
+        }
+    }
+
+    getNotes();
+</script>
