@@ -81,22 +81,22 @@ button[type="submit"]:hover {
 <script>
     const urlParams = new URLSearchParams(window.location.search);
     const noteID = urlParams.get('_id');
-    console.log("Note ID:", noteID);
+  
 
     const getNote = () => {
-        fetch(`https://repulsive-fox-zipper.cyclic.app/notes?_id=${noteID}`, {
-            headers: {
-                "Content-type": "application/json",
-                authorization: `Bearer ${localStorage.getItem("token")}`
-            }
-        })
-        .then(res => res.json())
-        .then(data => {
-            document.getElementById('title').value =data.title ;
-            document.getElementById('body').value = data.body ;
-        })
-        .catch(err => console.log(err));
-    }
+    fetch(`https://repulsive-fox-zipper.cyclic.app/notes/${noteID}`, {
+        headers: {
+            "Content-type": "application/json",
+            authorization: `Bearer ${localStorage.getItem("token")}`
+        }
+    })
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById('title').value = data.note.title;
+        document.getElementById('body').value = data.note.body;
+    })
+    .catch(err => console.log(err));
+}
 
     document.getElementById('updateNoteForm').addEventListener('submit', (event) => {
         event.preventDefault(); // Prevent form submission
