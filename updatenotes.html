@@ -79,46 +79,5 @@ button[type="submit"]:hover {
 </body>
 </html>
 <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const noteID = urlParams.get('_id');
-  
-
-    const getNote = () => {
-    fetch(`https://repulsive-fox-zipper.cyclic.app/notes/${noteID}`, {
-        headers: {
-            "Content-type": "application/json",
-            authorization: `Bearer ${localStorage.getItem("token")}`
-        }
-    })
-    .then(res => res.json())
-    .then(data => {
-        document.getElementById('title').value = data.note.title;
-        document.getElementById('body').value = data.note.body;
-    })
-    .catch(err => console.log(err));
-}
-
-    document.getElementById('updateNoteForm').addEventListener('submit', (event) => {
-        event.preventDefault(); // Prevent form submission
-        const formData = new FormData(event.target);
-        const title = formData.get('title');
-        const body = formData.get('body');
-
-        fetch(`https://repulsive-fox-zipper.cyclic.app/notes/${noteID}`, {
-            method: 'PATCH',
-            headers: {
-                "Content-type": "application/json",
-                authorization: `Bearer ${localStorage.getItem("token")}`
-            },
-            body: JSON.stringify({ title, body }) // Update title and body
-        })
-        .then(res => res.json())
-        .then(data => {
-            alert(data.msg);
-            window.location.href = "notes.html"; // Redirect to index.html after updating
-        })
-        .catch(err => console.log(err));
-    });
-
-    getNote(); // Fetch note data when the page loads
+    
 </script>
